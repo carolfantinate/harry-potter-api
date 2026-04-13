@@ -101,6 +101,8 @@
             <div id="container-casas">
             </div>
         </section>
+        <h2>Descubra sua casa!</h2>
+        <a href="quiz.html">Fazer quiz</a>
     </main>
     <footer>
 
@@ -110,74 +112,45 @@
         const casas = [
             {
                 nome: "Grifinória",
+                valor: "Gryffindor",
                 descricao: "Coragem, bravura e determinação",
                 imagem: "./assets/imgs/gryffindor.png"
             },
             {
                 nome: "Sonserina",
+                valor: "Slytherin",
                 descricao: "Ambição, astúcia e liderança",
                 imagem: "./assets/imgs/slytherin.png"
             },
             {
                 nome: "Corvinal",
+                valor: "Ravenclaw",
                 descricao: "Inteligência e criatividade",
                 imagem: "./assets/imgs/ravenclaw.png"
             },
             {
                 nome: "Lufa-Lufa",
+                valor: "Hufflepuff",
                 descricao: "Lealdade e trabalho duro",
                 imagem: "./assets/imgs/hufflepuff.png"
             }
-        ];
+        ]
 
         const containerCasas = document.getElementById('container-casas')
 
         casas.forEach(casa => {
             const card = document.createElement('div')
             card.classList.add('card-casa')
-            card.classList.add(casa.nome.toLowerCase())
 
             card.innerHTML = `
-                <img src="${casa.imagem}" class="casa-logo">
-                <h3>${casa.nome}</h3>
-                <p>${casa.descricao}</p>
-            `
+        <img src="${casa.imagem}" class="casa-logo">
+        <h3>${casa.nome}</h3>
+        <p>${casa.descricao}</p>
+        <a href="personagens.html?casa=${casa.valor}">Ver personagens</a>
+    `
+
             containerCasas.appendChild(card)
         })
-
-        /*
-        async function carregarCasas() {
-            const containerCasas = document.getElementById('container-casas')
-            containerCasas.innerHTML = '<p>Carregando...</p>'
-
-            try {
-                const resposta = await fetch('https://potterhead-api.vercel.app/api/houses')
-                const casas = await resposta.json()
-                
-                containerCasas.innerHTML = ''
-
-                casas.forEach(casa => {
-                    const card = document.createElement('div')
-                    card.classList.add('card-casa')
-
-                    card.innerHTML = `
-                        <img src="${casa.image}" class="casa-logo">
-                        <h3>${casa.name}</h3>
-                        <p><strong>Fundador:</strong> ${casa.founder}</p>
-                        <p><strong>Animal:</strong> ${casa.animal}</p>
-                        <p><strong>Cor:</strong> ${casa.color}</p>
-                    `
-                    containerCasas.appendChild(card)
-                })
-            }
-            catch (error) {
-                console.error(error)
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', ()=>{
-            carregarCasas()
-        })*/
     </script>
 </body>
 

@@ -42,7 +42,7 @@
             font-weight: normal;
             font-size: 2em;
             color: #fff;
-           text-shadow: 2px 2px 4px #464646;
+            text-shadow: 2px 2px 4px #464646;
             margin-top: 15px;
         }
 
@@ -51,6 +51,7 @@
             flex-wrap: wrap;
             justify-content: center;
             padding: 20px;
+            color: #fff;
         }
 
         .card-personagem {
@@ -102,6 +103,91 @@
             color: #fff;
             border: none;
         }
+
+        .search-box {
+            position: relative;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 10px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+        .search-box #icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #555;
+        }
+
+        .filtros {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filtros button {
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            background-color: #121212;
+            border: none;
+        }
+
+        /* Casas */
+        #btn-grifinoria {
+            border: 2px solid #7F0909;
+        }
+
+        #btn-sonserina {
+            border: 2px solid #0D6217;
+        }
+
+        #btn-corvinal {
+            border: 2px solid #000A90;
+        }
+
+        #btn-lufalufa {
+            border: 2px solid #eed817;
+        }
+
+        #btn-todos {
+            border: 2px solid #fff;
+        }
+
+        .filtros button:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        /* Ativo (selecionado) */
+        .filtros button.ativo {
+            transform: scale(1.1);
+            background-color: #313131;
+        }
+
+        .card-personagem {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: aparecer 0.4s ease forwards;
+        }
+
+        @keyframes aparecer {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -111,10 +197,24 @@
     </header>
     <nav>
         <a href="index.html">Home</a>
+        <a href="casas.html">Casas</a>
     </nav>
     <main>
         <section>
             <h2>Pesonagens de Hogwarts</h2>
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Buscar personagem...">
+                <i class="fa-solid fa-magnifying-glass" id="icon"></i>
+            </div>
+
+            <div class="filtros">
+                <button id="btn-todos" class="ativo" onclick="filtrarCasa('')">Todos</button>
+                <button id="btn-grifinoria" onclick="filtrarCasa('Gryffindor')">Grifinória</button>
+                <button id="btn-sonserina" onclick="filtrarCasa('Slytherin')">Sonserina</button>
+                <button id="btn-corvinal" onclick="filtrarCasa('Ravenclaw')">Corvinal</button>
+                <button id="btn-lufalufa" onclick="filtrarCasa('Hufflepuff')">Lufa-Lufa</button>
+            </div>
+
             <div id="container-personagens">
             </div>
         </section>
@@ -124,55 +224,128 @@
 
     </footer>
 
-    <script>
+    <script src="https://kit.fontawesome.com/f9c90ebe75.js" crossorigin="anonymous"></script>
+    <script>let listaPersonagens = []
+        let casaSelecionada = ''
+
+        function pegarCasaDaURL() {
+            const params = new URLSearchParams(window.location.search)
+            return params.get('casa')
+        }
+
         async function carregarPersonagens() {
             const containerPersonagens = document.getElementById('container-personagens')
             containerPersonagens.innerHTML = '<p>Carregando...</p>'
 
             try {
                 const resposta = await fetch('https://potterhead-api.vercel.app/api/characters')
-                const personagens = await resposta.json()
+                listaPersonagens = await resposta.json()
 
-                containerPersonagens.innerHTML = ''
-
-                personagens.forEach(personagem => {
-                    const card = document.createElement('div')
-                    card.classList.add('card-personagem')
-
-                    card.innerHTML = `
-                    <img src="${personagem.image || "https://www.mooreseal.com/wp-content/uploads/2013/11/dummy-image-square.jpg"}" class="personagem-imagem">
-                        <h3>${personagem.name}</h3>
-                        <p><strong>Casa:</strong> ${personagem.house || "Desconhecida"}</p>
-                        <p><strong>Espécie:</strong> ${personagem.species || "Desconhecida"}</p>
-                        <p><strong>Gênero:</strong> ${personagem.gender || "Desconhecido"}</p>
-                        <p><strong>Patrono:</strong> ${personagem.patronus || "Desconhecido"}</p>
-                    `
-                    containerPersonagens.appendChild(card)
-                })
-            }
-            catch (error) {
+                aplicarFiltros()
+            } catch (error) {
                 console.error(error)
             }
         }
 
+        function mostrarPersonagens(personagens) {
+            const containerPersonagens = document.getElementById('container-personagens')
+            containerPersonagens.innerHTML = ''
+
+            if (personagens.length === 0) {
+                containerPersonagens.innerHTML = '<p>Nenhum personagem encontrado.</p>'
+                return
+            }
+
+            personagens.forEach(personagem => {
+                const card = document.createElement('div')
+                card.classList.add('card-personagem')
+
+                card.innerHTML = `
+            <img src="${personagem.image || "https://www.mooreseal.com/wp-content/uploads/2013/11/dummy-image-square.jpg"}" class="personagem-imagem">
+            <h3>${personagem.name}</h3>
+            <p><strong>Casa:</strong> ${personagem.house || "Desconhecida"}</p>
+            <p><strong>Espécie:</strong> ${personagem.species || "Desconhecida"}</p>
+            <p><strong>Gênero:</strong> ${personagem.gender || "Desconhecido"}</p>
+            <p><strong>Patrono:</strong> ${personagem.patronus || "Desconhecido"}</p>
+        `
+
+                containerPersonagens.appendChild(card)
+            })
+        }
+
+        function aplicarFiltros() {
+            const termo = document.getElementById('search').value.toLowerCase()
+
+            let resultado = listaPersonagens
+
+            if (termo !== '') {
+                resultado = resultado.filter(p =>
+                    p.name.toLowerCase().includes(termo)
+                )
+            }
+
+            if (casaSelecionada !== '') {
+                resultado = resultado.filter(p =>
+                    p.house === casaSelecionada
+                )
+            }
+
+            mostrarPersonagens(resultado)
+        }
+
+        function filtrarCasa(casa) {
+            casaSelecionada = casa
+
+            document.querySelectorAll('.filtros button').forEach(btn => {
+                btn.classList.remove('ativo')
+            })
+
+            const botoes = document.querySelectorAll('.filtros button')
+            botoes.forEach(btn => {
+                if (btn.getAttribute('onclick') === `filtrarCasa('${casa}')`) {
+                    btn.classList.add('ativo')
+                }
+            })
+
+            aplicarFiltros()
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            const casaURL = pegarCasaDaURL()
+
+            if (casaURL) {
+                casaSelecionada = casaURL
+
+                // 🔥 ativa o botão correto
+                const botoes = document.querySelectorAll('.filtros button')
+
+                botoes.forEach(btn => {
+                    if (btn.getAttribute('onclick') === `filtrarCasa('${casaURL}')`) {
+                        btn.classList.add('ativo')
+                    } else {
+                        btn.classList.remove('ativo')
+                    }
+                })
+            }
+
             carregarPersonagens()
+
+            document.getElementById('search').addEventListener('input', aplicarFiltros)
         })
 
         window.onscroll = function () {
-            let btn = document.getElementById("btnTopo");
+            let btn = document.getElementById("btnTopo")
             if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
-                btn.style.display = "block"; // Mostra
+                btn.style.display = "block"
             } else {
-                btn.style.display = "none"; // Esconde
+                btn.style.display = "none"
             }
-        };
-
-        function voltarTopo() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
         }
 
+        function voltarTopo() {
+            document.body.scrollTop = 0
+            document.documentElement.scrollTop = 0
+        }
     </script>
 </body>
 
