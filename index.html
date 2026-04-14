@@ -5,52 +5,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harry Potter - API</title>
-    <style>
-        @import url('https://fonts.cdnfonts.com/css/harry-potter');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #121212;
-            font-family: 'Arial', sans-serif;
-
-            cursor: url('https://cdn-icons-png.flaticon.com/512/616/616494.png'), auto;
-
-        }
-
-        header {
-            background-color: #1a1a1a;
-            padding: 25px 0;
-        }
-
-        h1 {
-            font-family: 'Harry Potter', sans-serif;
-            text-align: center;
-            font-weight: normal;
-            font-size: 3em;
-            color: #fff;
-        }
-    </style>
+    <link rel="stylesheet" href="./assets/estilos/style.css">
+    <link rel="stylesheet" href="./assets/estilos/home.css">
+    <link rel="icon" href="./assets/imgs/hp.png">
 </head>
 
 <body>
     <header>
         <h1>Harry Potter</h1>
-        <!-- <img src="https://www.harrypotter.com/_next/static/images/logo-gold-600-7a7e89b6db1ffeaab025f2091d21b645.png" alt="Harry Potter Logo" id="hp-logo"> -->
     </header>
+    <nav>
+        <a href="#" id="atual">Home</a>
+        <a href="./paginas/casas.html">Casas</a>
+        <a href="./paginas/personagens.html">Personagens</a>
+        <a href="./paginas/feiticos.html">Feitiços</a>
+        <a href="./paginas/quiz.html">Quiz</a>
+    </nav>
 
     <main>
-        <a href="casas.html">Casas</a>
-        <a href="personagens.html">Personagens</a>
-        <a href="feiticos.html">Feitiços</a>
+        <section class="hero-castelo">
+            <img src="https://t2.tudocdn.net/357112?w=1920&h=1080" id="castelo">
+
+            <div class="hero-texto">
+                <h1>Bem-vindo a Hogwarts</h1>
+                <p>Entre e descubra o mundo mágico</p>
+                <div class="seta-scroll">
+                    <i class="fa-solid fa-angles-up"></i>
+                </div>
+            </div>
+        </section>
+
+        <section class="container-cards">
+            <h2>Explore o mundo de Harry Potter</h2>
+            <section class="home-cards">
+                <a href="./paginas/casas.html" class="card-home">
+                    <div class="overlay"></div>
+                    <img src="https://m.media-amazon.com/images/I/712vK5vqZgL._AC_UF894,1000_QL80_.jpg">
+
+                    <div class="conteudo">
+                        <h2>Casas</h2>
+                        <p>Descubra as casas de Hogwarts</p>
+                    </div>
+                </a>
+
+                <a href="./paginas/personagens.html" class="card-home">
+                    <div class="overlay"></div>
+                    <img src="https://recreio.com.br/wp-content/uploads/2024/08/harry-potter-filmes.jpg">
+
+                    <div class="conteudo">
+                        <h2>Personagens</h2>
+                        <p>Explore todos os personagens</p>
+                    </div>
+                </a>
+
+                <a href="./paginas/feiticos.html" class="card-home">
+                    <div class="overlay"></div>
+                    <img
+                        src="https://static.wikia.nocookie.net/harrypotter/images/4/43/Wingardium_leviosa.jpg/revision/latest?cb=20180412194840&path-prefix=pt-br">
+
+                    <div class="conteudo">
+                        <h2>Feitiços</h2>
+                        <p>Veja os feitiços mágicos</p>
+                    </div>
+                </a>
+
+            </section>
     </main>
     <footer>
-
+        <p>Feito com magia e código por <a href="https://github.com/carolfantinate" target="_blank">Carol</a> e <a
+                href="https://github.com/beagagliano" target="_blank">Bea</a> 🪄</p>
     </footer>
+
+    <div id="wand"></div>
+
+    <script src="https://kit.fontawesome.com/f9c90ebe75.js" crossorigin="anonymous"></script>
+    <script src="js/varinha.js"></script>
+    <script>
+        window.addEventListener("scroll", () => {
+            const scroll = window.scrollY
+            const castelo = document.getElementById("castelo")
+
+            const zoom = 1 + scroll * 0.0008
+
+            castelo.style.transform = `scale(${zoom})`
+        })
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harry Potter - API</title>
+    <link rel="stylesheet" href="../assets/estilos/style.css">
+    <link rel="stylesheet" href="../assets/estilos/personagens.css">
+    <link rel="icon" href="../assets/imgs/hp.png">
+</head>
+
+<body>
+    <header>
+        <h1>Harry Potter</h1>
+    </header>
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="./casas.html">Casas</a>
+        <a href="#" id="atual">Personagens</a>
+        <a href="./feiticos.html">Feitiços</a>
+        <a href="./quiz.html">Quiz</a>
+    </nav>
+    <main>
+        <section>
+            <h2>Personagens de Hogwarts</h2>
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Buscar personagem...">
+                <i class="fa-solid fa-magnifying-glass" id="icon"></i>
+            </div>
+
+            <div class="filtros">
+                <button id="btn-todos" class="ativo" onclick="filtrarCasa('')">Todos</button>
+                <button id="btn-grifinoria" onclick="filtrarCasa('Gryffindor')">Grifinória</button>
+                <button id="btn-sonserina" onclick="filtrarCasa('Slytherin')">Sonserina</button>
+                <button id="btn-corvinal" onclick="filtrarCasa('Ravenclaw')">Corvinal</button>
+                <button id="btn-lufalufa" onclick="filtrarCasa('Hufflepuff')">Lufa-Lufa</button>
+            </div>
+
+            <div id="container-personagens">
+            </div>
+        </section>
+    </main>
+    <button id="btnTopo" onclick="voltarTopo()">↑</button>
+    <footer>
+        <p>Feito com magia e código por <a href="https://github.com/carolfantinate" target="_blank">Carol</a> e <a
+                href="https://github.com/beagagliano" target="_blank">Bea</a> 🪄</p>
+    </footer>
+
+    <div id="wand"></div>
+
+    <script src="../js/varinha.js"></script>
+    <script src="../js/personagens.js"></script>
+
+    <script src="https://kit.fontawesome.com/f9c90ebe75.js" crossorigin="anonymous"></script>
+</body>
+
+</html>
